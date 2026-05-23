@@ -5,7 +5,7 @@ require("dotenv").config();
 
 const app = express();
 
-// Middleware
+/* ---------------- MIDDLEWARE ---------------- */
 app.use(cors());
 app.use(express.json());
 
@@ -25,19 +25,19 @@ const Task = mongoose.model("Task", {
 
 /* ---------------- ROUTES ---------------- */
 
-// Test route
+// Home route
 app.get("/", (req, res) => {
   res.send("Task Manager API is running 🚀");
 });
 
-// Test API route
+// Test route
 app.get("/test", (req, res) => {
   res.json({ message: "Backend working fine 🔥" });
 });
 
 /* ---------------- TASK ROUTES ---------------- */
 
-// Get all tasks
+// GET all tasks
 app.get("/tasks", async (req, res) => {
   try {
     const tasks = await Task.find();
@@ -47,7 +47,7 @@ app.get("/tasks", async (req, res) => {
   }
 });
 
-// Create task
+// CREATE task
 app.post("/tasks", async (req, res) => {
   try {
     const newTask = new Task(req.body);
@@ -58,11 +58,30 @@ app.post("/tasks", async (req, res) => {
   }
 });
 
-// Delete task
+// DELETE task
 app.delete("/tasks/:id", async (req, res) => {
   try {
     await Task.findByIdAndDelete(req.params.id);
     res.json({ message: "Task deleted ✅" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// UPDATE task (Toggle complete)
+app.put("/tasks/:id", async (req, res) => {
+  try {
+    const task = await Task.findById(req.params.id);
+
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    task.completed = !task.completed;
+
+    await task.save();
+
+    res.json(task);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
