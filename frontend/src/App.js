@@ -19,7 +19,7 @@ function App() {
     try {
 
       const response = await axios.get(
-        "https://task-manager-backend-36hm.onrender.com/api/tasks"
+        "https://task-manager-backend-36hm.onrender.com/tasks"
       );
 
       setTasks(response.data);
@@ -51,7 +51,7 @@ function App() {
     try {
 
       await axios.post(
-        "https://task-manager-backend-36hm.onrender.com/api/tasks",
+        "https://task-manager-backend-36hm.onrender.com/tasks",
         {
           title: newTask
         }
@@ -77,7 +77,7 @@ function App() {
     try {
 
       await axios.delete(
-        `https://task-manager-backend-36hm.onrender.com/api/tasks/${id}`
+        `https://task-manager-backend-36hm.onrender.com/tasks/${id}`
       );
 
       fetchTasks();
@@ -98,7 +98,7 @@ function App() {
     try {
 
       await axios.put(
-        `https://task-manager-backend-36hm.onrender.com/api/tasks/${id}`,
+        `https://task-manager-backend-36hm.onrender.com/tasks/${id}`,
         {
           completed: true
         }
